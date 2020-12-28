@@ -1,12 +1,32 @@
 # redyt
-Search reddit with CLI
+Download images from subreddit
 
-- You need to create a ~/.cache/redyt/ directory
-- Also a ~/.config/redyt/subreddit.txt
+Features in this fork:
 
-here is mine subreddit.txt: http://0x0.st/-rbq.txt
+- doesnt use jq, uses simple greps
+- images are stored in separate folders for each subreddits
+- images are not deleted after execution so that user can reopen them
+- messages are sent to notification daemon as well as stdout
+- limits can be changed but puting a numeric value in second args ($2)
+- uses rofi instead of dmenu
+- shows appropriate messages ( no subreddit entered, no images found )
+- user doesn't need to create cache directory, its created automatically
+- images are only removed from a subreddit directory when updating that dir
+- remove unnecesary awks and redirection into temporary files
+- supresses ugly output of wget and shows minimal progress update instead
 
-Programs you need are dmenu, jq
+The rofi prompt reads from ~/.config/redyt/subreddits file if present.
 
-note: Idk how to write readme. if anyone can do it and give me a pull request please
+Format of the file:
 
+    me_irl    selfies of the soul
+	dankmemes Memes which are dank
+	earthporn Amazing images of light and landscape
+	abandonedporn
+
+descriptions of the subreddits can be provided 
+after the subreddit itself separated by 
+one or more space but are not mandatory.
+
+Dependencies:
+- rofi
