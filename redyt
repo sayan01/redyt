@@ -4,7 +4,7 @@ notify(){
 		body="r/$subreddit"
 		echo "$* ($body)"
 	else
-		echo $*
+		echo "$*"
 	fi
 	notify-send -a redyt -i none "$*" "$body" &
 }
@@ -16,7 +16,7 @@ conf="$HOME/.config/redyt"
 limit=50
 if [ -r "$conf/limit" ]; then limit=$(cat "$conf/limit"); fi
 if [ -z "$1" ]; then
-	subreddit=$(cat "$conf"/subreddits | rofi -dmenu -p "r/" -i | cut -d' ' -f1)
+	subreddit=$(rofi -dmenu -p "r/" -i < "$conf"/subreddits | cut -d' ' -f1 )
 	if [ -z "$subreddit" ]; then quitn "⚠️ No subreddit entered"; fi
 else
 	subreddit=$1
@@ -25,17 +25,17 @@ fi
 
 cachedir="$HOME/.cache/redyt/$subreddit"
 mkdir -p "$cachedir"
-rm "$cachedir"/* -rf
+rm "${cachedir:?}"/* -rf
 echo "using limit = $limit"
 notify "⏱ Downloading images"
 imgs=$(
-curl -sH "User-agent: 'your bot 0.1'" https://www.reddit.com/r/$subreddit/hot.json?limit=$limit |\
+curl -sH "User-agent: 'your bot 0.1'" "https://www.reddit.com/r/$subreddit/hot.json?limit=$limit" |\
 grep -Po 'url_overridden_by_dest": "\Khttps://[^"]+?\.(jpg|png)')
 if [ -z "$imgs" ]; then quitn "⚠️ Nothing found"; fi
 i=1
 for img in $imgs; do
 	echo "Downloading image #$i ($img)"
-	wget -qP $cachedir $img
+	wget -qP "$cachedir" "$img"
 	i=$((i+1))
 done
 notify "✅ Images downloaded"
