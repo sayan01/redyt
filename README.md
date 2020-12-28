@@ -14,6 +14,7 @@ Features in this fork:
 - images are only removed from a subreddit directory when updating that dir
 - remove unnecesary awks and redirection into temporary files
 - supresses ugly output of wget and shows minimal progress update instead
+- limit can be changed in ~/.config/redyt/limit file
 
 The rofi prompt reads from ~/.config/redyt/subreddits file if present.
 

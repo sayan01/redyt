@@ -1,25 +1,32 @@
 #!/bin/bash
 notify(){
-	if [ -n "$subreddit" ]; then body="r/$subreddit"; fi
-	echo $*
+	if [ -n "$subreddit" ];then 
+		body="r/$subreddit"
+		echo "$* ($body)"
+	else
+		echo $*
+	fi
 	notify-send -a redyt -i none "$*" "$body" &
 }
 quitn(){
 	notify "$*"
 	exit
 }
+conf="$HOME/.config/redyt"
 limit=50
-if [ -z $1 ]; then
-	subreddit=$(cat ~/.config/redyt/subreddits | rofi -dmenu -p "r/" -i -l10 | cut -d' ' -f1)
+if [ -r "$conf/limit" ]; then limit=$(cat "$conf/limit"); fi
+if [ -z "$1" ]; then
+	subreddit=$(cat "$conf"/subreddits | rofi -dmenu -p "r/" -i | cut -d' ' -f1)
 	if [ -z "$subreddit" ]; then quitn "⚠️ No subreddit entered"; fi
 else
 	subreddit=$1
-	[ -n $2 ] && limit=$2
+	[ -n "$2" ] && limit=$2
 fi
 
 cachedir="$HOME/.cache/redyt/$subreddit"
 mkdir -p "$cachedir"
 rm "$cachedir"/* -rf
+echo "using limit = $limit"
 notify "⏱ Downloading images"
 imgs=$(
 curl -sH "User-agent: 'your bot 0.1'" https://www.reddit.com/r/$subreddit/hot.json?limit=$limit |\
