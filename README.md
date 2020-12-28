@@ -30,4 +30,5 @@ after the subreddit itself separated by
 one or more space but are not mandatory.
 
 Dependencies:
-- rofi
+- rofi (for prompt, change it to dmenu if you prefer)
+- sxiv (for image viewing)
