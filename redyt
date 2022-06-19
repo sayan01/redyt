@@ -35,8 +35,9 @@ if [ -z "$imgs" ]; then quitn "⚠️ Nothing found"; fi
 i=1
 for img in $imgs; do
 	echo "Downloading image #$i ($img)"
-	wget -nc -qP "$cachedir" "$img"
+	wget -nc -qP "$cachedir" "$img" &
 	i=$((i+1))
 done
+while echo "$(jobs)" | grep -q "Running" ; do echo > /dev/null ; done
 notify "✅ Images downloaded"
 sxiv -a "$cachedir"
