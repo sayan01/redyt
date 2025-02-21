@@ -38,6 +38,6 @@ for img in $imgs; do
 	wget -nc -qP "$cachedir" "$img" &
 	i=$((i+1))
 done
-while echo "$(jobs)" | grep -q "Running" ; do echo > /dev/null ; done
+wait
 notify "✅ Images downloaded"
 sxiv -a "$cachedir"
